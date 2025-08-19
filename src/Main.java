@@ -1,7 +1,7 @@
-import javax.swing.*;
+import Containers.MainWindow;
 
 public class Main {
     public static void main(String[] args) {
-        JFrame frame = new MainWindow("MedicDoc");
+        new MainWindow("MedicDoc");
     }
 }
