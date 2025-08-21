@@ -9,6 +9,8 @@ public class MenuScene extends Scene {
         super(panelName, cardLayout, parentPanel);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setButtons(this);
+        System.out.println("Scene " + panelName + " initialized. Components=" + getComponentCount());
+
     }
 
     private void setButtons(JPanel buttonPanel) {

@@ -6,14 +6,18 @@ import Scenes.*;
 
 public class CardsPanel extends JPanel {
     public CardLayout cardLayout;
+    private JPanel menu;
+    private JPanel patientList;
+    private JPanel addingPatient;
 
     public CardsPanel() {
         cardLayout = new CardLayout();
         this.setLayout(cardLayout);
-        this.setBackground(Color.PINK);
-        new MenuScene("MENU", cardLayout, this);
-        new PatientsListScene("PATIENTS_LIST", cardLayout, this);
-        new AddingPatientScene("ADD_PATIENT", cardLayout, this);
+        this.setBackground(new Color(255,220,240));
+        menu = new MenuScene("MENU", cardLayout, this);
+        patientList = new PatientsListScene("PATIENTS_LIST", cardLayout, this);
+        addingPatient = new AddingPatientScene("ADD_PATIENT", cardLayout, this);
+        cardLayout.show(this, "MENU");
         this.revalidate();
         this.repaint();
     }

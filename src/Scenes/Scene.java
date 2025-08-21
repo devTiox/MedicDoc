@@ -3,6 +3,7 @@ package Scenes;
 import Containers.MainWindow;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public abstract class Scene extends JPanel {
     public CardLayout cardLayout;
@@ -16,10 +17,19 @@ public abstract class Scene extends JPanel {
         this.cardLayout = cardLayout;
         this.parentPanel = parentPanel;
         this.setBackground(new Color(255,220,240));
+        this.setOpaque(true);
         parentPanel.add(this,  panelName);
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "escape");
+        getActionMap().put("escape", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                backToMenuScene();
+            }
+        });
+
     }
 
-//    public void backToMainPanel() {
-//        cardLayout.show(parentPanel,"MENU");
-//    }
+    private void backToMenuScene() {
+        cardLayout.show(parentPanel,"MENU");
+    }
 }
