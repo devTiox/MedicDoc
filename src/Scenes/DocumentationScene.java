@@ -1,28 +1,47 @@
 package Scenes;
 
 import Containers.CardsPanel;
+import Containers.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class DocumentationScene extends Scene {
+    private JPanel leftPanel;
+    private JPanel rightPanel;
+    private JPanel middlePanel;
 
-//dodac 3 panele zwykle obok siebie i sie nie jebac z tym
     public DocumentationScene(String title, CardLayout cardLayout, CardsPanel parentPanel, Patient patient) {
         super(title, cardLayout, parentPanel);
-        JPanel panel = new JPanel(new GridBagLayout());
         UIManager.put("CheckBox.font", new Font("Arial", Font.BOLD, 20));
         UIManager.put("Label.font", new Font("Arial", Font.ITALIC, 25));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 0, 10);
-        panel.setOpaque(false);
-        setUpCheckBoxes(gbc, panel);
-        JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setOpaque(false);
-        this.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setOpaque(false);
+
+        leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setOpaque(false);
+
+        middlePanel = new JPanel();
+        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
+        middlePanel.setOpaque(false);
+
+        rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setOpaque(false);
+
+
+        mainPanel.add(leftPanel, BorderLayout.WEST);
+        mainPanel.add(middlePanel, BorderLayout.CENTER);
+        mainPanel.add(rightPanel,  BorderLayout.EAST);
+
+        setUpCheckBoxes();
+
+      this.add(mainPanel, BorderLayout.CENTER);
     }
 
-    private void setUpCheckBoxes(GridBagConstraints gbc, JPanel panel) {
+    private void setUpCheckBoxes() {
         Lists lists = new Lists();
 
 
@@ -40,82 +59,59 @@ public class DocumentationScene extends Scene {
         JCheckBox[] physical = new JCheckBox[29];
         JCheckBox[] other = new JCheckBox[9];
 
-        gbc.gridy = 0;
-        gbc.gridx = 0;
         int index = 0;
-        panel.add(urinaryLabel, gbc);
-        gbc.gridy++;
+        leftPanel.add(urinaryLabel);
+
         for (String symptom : lists.urinarySymptoms) {
             JCheckBox checkBox = new JCheckBox(symptom);
             checkBox.setOpaque(false);
             urinary[index] = checkBox;
-            add(checkBox, gbc);
-            gbc.gridy++;
+            leftPanel.add(checkBox);
         }
 
-        gbc.gridy = 33;
-        gbc.gridx = 0;
         index = 0;
-        panel.add(digestiveLabel, gbc);
-        gbc.gridy++;
+        leftPanel.add(digestiveLabel);
         for (String symptom : lists.digestiveSymptoms) {
             JCheckBox checkBox = new JCheckBox(symptom);
             checkBox.setOpaque(false);
             digestive[index] = checkBox;
-            panel.add(checkBox, gbc);
-            gbc.gridy++;
+            leftPanel.add(checkBox);
         }
 
-        gbc.gridy = 0;
-        gbc.gridx = 1;
         index = 0;
-        panel.add(mentalLabel, gbc);
-        gbc.gridy++;
+        middlePanel.add(mentalLabel);
         for (String symptom : lists.mentalSymptoms) {
             JCheckBox checkBox = new JCheckBox(symptom);
             checkBox.setOpaque(false);
             mental[index] = checkBox;
-            panel.add(checkBox, gbc);
-            gbc.gridy++;
+            middlePanel.add(checkBox);
         }
 
-        gbc.gridy = 1;
-        gbc.gridx = 33;
-        panel.add(muscluarLabel, gbc);
+        rightPanel.add(muscluarLabel);
         index = 0;
-        gbc.gridy++;
         for (String symptom : lists.musculoSkeletalSymptoms) {
             JCheckBox checkBox = new JCheckBox(symptom);
             checkBox.setOpaque(false);
             musculoSkeletal[index] = checkBox;
-            panel.add(checkBox, gbc);
-            gbc.gridy++;
+            rightPanel.add(checkBox);
         }
 
-        gbc.gridy = 0;
-        gbc.gridx = 3 ;
         index = 0;
-        panel.add(physicalLabel, gbc);
-        gbc.gridy++;
+        middlePanel.add(physicalLabel);
         for (String symptom : lists.physicalSymptoms) {
             JCheckBox checkBox = new JCheckBox(symptom);
             checkBox.setOpaque(false);
             physical[index] = checkBox;
-            panel.add(checkBox, gbc);
-            gbc.gridy++;
+            middlePanel.add(checkBox);
         }
 
-        gbc.gridy = 33;
-        gbc.gridx = 3;
         index = 0;
-        panel.add(otherLabel, gbc);
-        gbc.gridy++;
+        rightPanel.add(otherLabel);
         for (String symptom : lists.otherSymptoms) {
             JCheckBox checkBox = new JCheckBox(symptom);
             checkBox.setOpaque(false);
             other[index] = checkBox;
-            panel.add(checkBox, gbc);
-            gbc.gridy++;
+            rightPanel.add(checkBox);
         }
     }
 }
