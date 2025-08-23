@@ -7,18 +7,19 @@ record Patient (
     String birthDate,
     String PESEL,
     String phoneNumber,
+    String email,
     String documentation
 ){
     @Override
     public String toString() {
         return """
-                -%s
-                -%s
-                -%s
-                -%s
-                -%s
-                -%s
-                -%s
-                """.formatted(name,lastName,address,birthDate,PESEL,phoneNumber, documentation);
+                %s
+                %s
+                %s
+                %s
+                %s
+                %s
+                %s
+                """.formatted(name,lastName,address,birthDate,PESEL,phoneNumber, email);
     }
 }

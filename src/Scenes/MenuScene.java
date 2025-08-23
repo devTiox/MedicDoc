@@ -1,16 +1,15 @@
 package Scenes;
 
+import Containers.CardsPanel;
 import javax.swing.*;
 import java.awt.*;
 
 public class MenuScene extends Scene {
 
-    public MenuScene(String panelName, CardLayout cardLayout, JPanel parentPanel) {
+    public MenuScene(String panelName, CardLayout cardLayout, CardsPanel parentPanel) {
         super(panelName, cardLayout, parentPanel);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setButtons(this);
-        System.out.println("Scene " + panelName + " initialized. Components=" + getComponentCount());
-
     }
 
     private void setButtons(JPanel buttonPanel) {
@@ -37,9 +36,15 @@ public class MenuScene extends Scene {
         JButton button = new JButton(name);
         switch (name) {
             //noinspection SpellCheckingInspection
-            case "Dodaj Pacjenta" -> button.addActionListener(e-> cardLayout.show(parentPanel, "ADD_PATIENT"));
+            case "Dodaj Pacjenta" -> button.addActionListener(e->{
+                parentPanel.resetAddingScene();
+                cardLayout.show(parentPanel, "ADD_PATIENT");
+            });
             //noinspection SpellCheckingInspection
-            case "Spis Pacjentów"  -> button.addActionListener(e-> cardLayout.show(parentPanel, "PATIENTS_LIST"));
+            case "Spis Pacjentów"  -> {
+//                parentPanel.updatePatientsListScene();
+                button.addActionListener(e-> cardLayout.show(parentPanel, "PATIENTS_LIST"));
+            }
             //noinspection SpellCheckingInspection
             case "Wyjdź" -> button.addActionListener(e -> System.exit(0));
         }

@@ -1,11 +1,14 @@
 package Scenes;
 
-import javax.swing.*;
+import Containers.CardsPanel;
+
 import java.awt.*;
 
 public class PatientScene extends Scene{
 
-    public PatientScene(String title, CardLayout cardLayout, JPanel parentPanel) {
+    public PatientScene(String title, CardLayout cardLayout, CardsPanel parentPanel) {
         super(title, cardLayout, parentPanel);
     }
+
+
 }
