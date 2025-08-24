@@ -21,10 +21,10 @@ public class CardsPanel extends JPanel {
         this.repaint();
     }
 
-//    public void updatePatientsListScene(){
-//        patientsList.revalidate();
-//        patientsList.repaint();
-//    }
+    public void updatePatientsListScene(){
+        patientsList.revalidate();
+        patientsList.repaint();
+    }
 
     public void resetAddingScene(){
         addingPatient.reset();

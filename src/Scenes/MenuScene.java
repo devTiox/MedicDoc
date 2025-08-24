@@ -41,10 +41,7 @@ public class MenuScene extends Scene {
                 cardLayout.show(parentPanel, "ADD_PATIENT");
             });
             //noinspection SpellCheckingInspection
-            case "Spis Pacjentów"  -> {
-//                parentPanel.updatePatientsListScene();
-                button.addActionListener(e-> cardLayout.show(parentPanel, "PATIENTS_LIST"));
-            }
+            case "Spis Pacjentów"  -> button.addActionListener(e-> cardLayout.show(parentPanel, "PATIENTS_LIST"));
             //noinspection SpellCheckingInspection
             case "Wyjdź" -> button.addActionListener(e -> System.exit(0));
         }
