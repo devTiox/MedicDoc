@@ -58,7 +58,7 @@ public class AddingPatientScene extends Scene{
                 JOptionPane.YES_NO_OPTION);
 
         if(result == JOptionPane.YES_OPTION){
-            new DocumentationScene("DOCUMENTATION_SCENE", cardLayout, parentPanel);
+            new newDocumentationScene("DOCUMENTATION_SCENE", cardLayout, parentPanel);
             cardLayout.show(parentPanel, "DOCUMENTATION_SCENE");
 //            PatientsListScene.patientsList.add(newPatient);
         }

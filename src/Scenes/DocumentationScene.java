@@ -7,7 +7,15 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 public class DocumentationScene extends Scene {
-
+    //TODO: refactor this shit into 2 separate classes one with checkBoxes one with writing fields{
+    // Zażywane leki (wraz z powodem)
+    // Zażywane suplementy:
+    // Schorzenia, przewlekłe choroby :
+    // Aktywność fizyczna i rodzaj wykonywanej pracy:
+    // (ile razy w tygodniu i intensywność+ praca siedząca/fizyczna)
+    // Nietolerancje pokarmowe + nielubiane produkty:
+    // Alergie (pokarmowe/wziewne/na leki):
+    // }
     private String documentation;
 
     private final JPanel leftPanel;
@@ -34,8 +42,12 @@ public class DocumentationScene extends Scene {
         UIManager.put("CheckBox.font", new Font("Arial", Font.BOLD, 20));
         UIManager.put("Label.font", new Font("Arial", Font.ITALIC, 25));
 
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setOpaque(false);
+        CardLayout thisCardLayout = new  CardLayout();
+        this.setLayout(thisCardLayout);
+
+        JPanel textPanel = new JPanel();
+        JPanel checkBoxesPanel = new JPanel(new BorderLayout());
+        checkBoxesPanel.setOpaque(false);
 
         leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -50,12 +62,13 @@ public class DocumentationScene extends Scene {
         rightPanel.setOpaque(false);
 
 
-        mainPanel.add(leftPanel, BorderLayout.WEST);
-        mainPanel.add(middlePanel, BorderLayout.CENTER);
-        mainPanel.add(rightPanel,  BorderLayout.EAST);
+        checkBoxesPanel.add(leftPanel, BorderLayout.WEST);
+        checkBoxesPanel.add(middlePanel, BorderLayout.CENTER);
+        checkBoxesPanel.add(rightPanel,  BorderLayout.EAST);
 
         setUpCheckBoxes();
-        this.add(mainPanel, BorderLayout.CENTER);
+        this.add(checkBoxesPanel, "CHECKBOXES");
+
         getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enter");
         getActionMap().put("enter", new AbstractAction() {
             @Override
@@ -197,5 +210,6 @@ public class DocumentationScene extends Scene {
         documentation += base;
         System.out.println(base);
     }
+
 }
 

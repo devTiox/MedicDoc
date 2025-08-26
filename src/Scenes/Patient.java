@@ -1,6 +1,6 @@
 package Scenes;
 
-record Patient (
+public record Patient (
     String name,
     String lastName,
     String address,

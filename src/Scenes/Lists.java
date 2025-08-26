@@ -54,17 +54,17 @@ public class Lists {
     public List<String> mentalSymptoms = List.of(
             "wewnętrzne napięcie",
             "wahanie nastrojów",
-            "drażliwość, wybuchy furii",
+            "drażliwość/ wybuchy furii",
             "perfekcjonizm",
             "łatwość popadania w uzależnienia",
-            "skłonność do irytacji, złości",
+            "skłonność do irytacji/ złości",
             "często odczuwana wściekłość",
             "rozdrażnienie",
             "dominująca osobowość",
             "nerwowość",
             "lękliwość",
             "zaburzenia snu",
-            "szybka, mętna i niezrozumiała mowa",
+            "szybka/ mętna i niezrozumiała mowa",
             "osłabienie sprawności umysłowej",
             "zaburzenia koncentracji",
             "brak ochoty na rozmowę",
@@ -72,14 +72,14 @@ public class Lists {
             "zaburzenia snu",
             "psychiczna podatność na zranienia",
             "tłumienie gniewu",
-            "żal, tęsknota",
+            "żal/ tęsknota",
             "uczucie niepewności",
-            "wyczerpanie, brak energii",
+            "wyczerpanie/ brak energii",
             "szumy uszne",
-            "bóle głowy, migreny",
+            "bóle głowy/ migreny",
             "zamartwianie się (overthinking)",
             "drażliwość",
-            "przygnębienie i zniechęcenie w związku z uczuciem ociężałości, niechęć do działania"
+            "przygnębienie i zniechęcenie w związku z uczuciem ociężałości/ niechęć do działania"
     );
 
     public List<String> musculoSkeletalSymptoms = List.of(
@@ -89,7 +89,7 @@ public class Lists {
             "problemy ze stawami biodrowymi",
             "drętwienie kończyn",
             "znużenie fizyczne",
-            "marźnięcie - zimne kolana, biodra, pośladki",
+            "marźnięcie - zimne kolana/biodra/pośladki",
             "gorące stopy",
             "marznięcie",
             "uczucie osłabionej percepcji (czucia przestrzennego, wpadanie na przedmioty)",
@@ -100,7 +100,7 @@ public class Lists {
     );
 
     public List<String> physicalSymptoms = List.of(
-            "piekące, swędzące oczy",
+            "piekące/swędzące oczy",
             "suchość w ustach po przebudzeniu",
             "bladość",
             "obrzęki twarzy",
@@ -108,7 +108,7 @@ public class Lists {
             "uczucie ciężkości",
             "małe pragnienie",
             "skłonność do siniaków i cellulitu",
-            "złogi tłuszczu na pośladkach, biodrach, udach",
+            "złogi tłuszczu na pośladkach/biodrach/udach",
             "śluz w oskrzelach",
             "wysuszona skóra",
             "szarzenie skóry",
@@ -117,7 +117,7 @@ public class Lists {
 
     public List<String> otherSymptoms = List.of(
             "podatność na przeziębienia",
-            "kaszel, katar",
+            "kaszel/ katar",
             "bolesne krwawienia dziąseł",
             "zimne dłonie i stopy",
             "wysuszone wargi i usta",
