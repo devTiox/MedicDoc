@@ -4,36 +4,156 @@ package Scenes;
 import Containers.CardsPanel;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class newDocumentationScene extends Scene {
 
-    public newDocumentationScene(String title, CardLayout cardLayout, CardsPanel parentPanel) {
-        super(title, cardLayout, parentPanel);
-        UIManager.put("CheckBox.font", new Font("Arial", Font.BOLD, 20));
-        UIManager.put("Label.font", new Font("Arial", Font.ITALIC, 25));
+    private final Patient patient;
 
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private final String todayDate = "Data wpisu:" + sdf.format(new Date()) + "\n" + "-------------------------\n";
+    private String documentation = todayDate;
+
+    public newDocumentationScene(String title, CardLayout cardLayout, CardsPanel parentPanel, Patient patient) {
+        super(title, cardLayout, parentPanel);
+        this.patient = patient;
+
+        UIManager.put("CheckBox.font", new Font("Arial", Font.BOLD, 20));
+        UIManager.put("Label.font", new Font("Arial", Font.ITALIC, 35));
+        UIManager.put("TextArea.font", new Font("Arial", Font.BOLD, 25));
+        UIManager.put("TextField.font", new Font("Arial", Font.BOLD, 20));
+        UIManager.put("Button.font", new Font("Arial", Font.ITALIC, 40));
         CardLayout thisCardLayout = new  CardLayout();
         this.setLayout(thisCardLayout);
 
-        JPanel textPanel = new JPanel();
-        CheckBoxesPanel checkBoxesPanel = new CheckBoxesPanel();
+        TextFieldsPanel textFieldsPanel = new TextFieldsPanel(this, thisCardLayout);
+        CheckBoxesPanel checkBoxesPanel = new CheckBoxesPanel(this, patient);
 
-        this.add(checkBoxesPanel, "CHECKBOXES");
-        thisCardLayout.show(this, "CHECKBOXES");
+        this.add(checkBoxesPanel, "CHECK-BOXES");
+        this.add(textFieldsPanel, "TEXT-FIELDS");
+        thisCardLayout.show(this, "TEXT-FIELDS");
+    }
+
+    public void combineDocumentation(String documentation) {
+        this.documentation += documentation + "-------------------------\n";
+    }
+
+    public void addDocumentation(){
+        patient.documentation = documentation;
+        System.out.println(patient);
     }
 }
 
-class CheckBoxesPanel extends JPanel{
-    private String documentation;
+@SuppressWarnings("SpellCheckingInspection")
+class TextFieldsPanel extends JPanel{
 
-    private final JLabel digestiveLabel = new JLabel("UKŁAD POKARMOWY");
-    private final JLabel urinaryLabel = new JLabel("UKŁAD MOCZOWY");
-    private final JLabel mentalLabel = new JLabel("STAN PSYCHICZNY");
-    private final JLabel muscularLabel = new JLabel("UKŁAD MIĘŚNIOWO KOSTNY");
-    private final JLabel physicalLabel = new JLabel("SPRAWNOŚĆ");
-    private final JLabel otherLabel = new JLabel("INNE");
+    private String fieldsDocumentation;
+
+    private final JLabel medicaments = new JLabel("Zażywane leki(wraz z powodem):".toUpperCase());
+    private final JLabel supplements = new JLabel("Zażywane suplementy:".toUpperCase());
+    private final JLabel diseases = new JLabel("Schorzenia, przewlekłe choroby:".toUpperCase());
+    private final JLabel physicalActivity = new JLabel(("Aktywność fizyczna i rodzaj wykonywanej pracy\n".toUpperCase()) +
+            "(ile razy w tygodniu i intensywność+ praca siedząca/fizyczna):".toUpperCase());
+    private final JLabel foodIntolerance = new JLabel("Nietolerancje pokarmowe + nielubiane produkty:".toUpperCase());
+    private final JLabel allergies = new JLabel("Alergie (pokarmowe/wziewne/na leki):".toUpperCase());
+    private final JLabel alerts = new JLabel("Uwagi:".toUpperCase());
+
+    private final JTextArea medicamentsField = new JTextArea();
+    private final JTextArea supplementsField = new JTextArea();
+    private final JTextArea diseasesField = new JTextArea();
+    private final JTextArea physicalActivityField = new JTextArea();
+    private final JTextArea foodIntoleranceField = new JTextArea();
+    private final JTextArea allergiesField = new JTextArea();
+    private final JTextArea alertsField = new JTextArea();
+
+    private final newDocumentationScene parent;
+    private final CardLayout parentLayout;
+
+    public TextFieldsPanel(newDocumentationScene parent,CardLayout parentLayout) {
+        this.parent = parent;
+        this.parentLayout = parentLayout;
+
+        this.setOpaque(false);
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 10, 15);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        setUp(gbc);
+    }
+
+    private void setUp(GridBagConstraints gbc){
+        setUpFields(medicaments, medicamentsField, gbc);
+        setUpFields(supplements, supplementsField, gbc);
+        setUpFields(diseases, diseasesField, gbc);
+        setUpFields(physicalActivity, physicalActivityField, gbc);
+        setUpFields(foodIntolerance, foodIntoleranceField, gbc);
+        setUpFields(allergies, allergiesField, gbc);
+        setUpFields(alerts, alertsField, gbc);
+
+        JButton saveButton = new JButton("ZAPISZ");
+        saveButton.addActionListener(e->{
+            fieldsDocumentation = "";
+            checkFields();
+            parent.combineDocumentation(fieldsDocumentation);
+            parentLayout.show(parent, "CHECK-BOXES");
+        });
+        this.add(saveButton, gbc);
+    }
+
+    private void setUpFields(JLabel label, JTextArea field, GridBagConstraints gbc){
+        field.setLineWrap(true);
+        field.setWrapStyleWord(true);
+        field.setRows(3);
+        field.setColumns(80);
+        this.add(label, gbc);
+        gbc.gridy++;
+        this.add(field, gbc);
+        gbc.gridy += 2;
+    }
+
+    private void checkFields(){
+        makeItString(medicamentsField.getText(), medicaments.getText());
+        makeItString(supplementsField.getText(), supplements.getText());
+        makeItString(diseasesField.getText(), diseases.getText());
+        makeItString(physicalActivityField.getText(), physicalActivity.getText());
+        makeItString(foodIntoleranceField.getText(), foodIntolerance.getText());
+        makeItString(allergiesField.getText(), allergies.getText());
+        makeItString(alertsField.getText(), alerts.getText());
+        System.out.println(fieldsDocumentation);
+    }
+
+    private void makeItString(String fieldContent, String base){
+        base += fieldContent;
+        base += "\n";
+        fieldsDocumentation += base;
+    }
+}
+
+@SuppressWarnings("SpellCheckingInspection")
+class CheckBoxesPanel extends JPanel{
+    private String checkBoxesDocumentation;
+
+    private final Patient newPatient;
+    private final newDocumentationScene parent;
+
+
+    private final JLabel digestiveLabel = new JLabel("UKŁAD POKARMOWY: ");
+    private final JLabel urinaryLabel = new JLabel("UKŁAD MOCZOWY: ");
+    private final JLabel mentalLabel = new JLabel("STAN PSYCHICZNY: ");
+    private final JLabel muscularLabel = new JLabel("UKŁAD MIĘŚNIOWO KOSTNY: ");
+    private final JLabel physicalLabel = new JLabel("SPRAWNOŚĆ: ");
+    private final JLabel otherLabel = new JLabel("INNE: ");
+
+    private final JTextField[] otherFields = new JTextField[]{
+            new JTextField(),
+            new JTextField(),
+            new JTextField(),
+            new JTextField()
+    };
 
     private final JCheckBox[] digestive = new JCheckBox[31];
     private final JCheckBox[] urinary = new JCheckBox[9];
@@ -42,8 +162,10 @@ class CheckBoxesPanel extends JPanel{
     private final JCheckBox[] physical = new JCheckBox[13];
     private final JCheckBox[] other = new JCheckBox[11];
 
-    public CheckBoxesPanel(){
+    public CheckBoxesPanel(newDocumentationScene parent, Patient newPatient){
         this.setOpaque(false);
+        this.newPatient = newPatient;
+        this.parent = parent;
 
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -65,22 +187,32 @@ class CheckBoxesPanel extends JPanel{
         setUpCheckBoxes(muscularLabel, muscularSkeletal, rightPanel, lists.musculoSkeletalSymptoms);
         setUpCheckBoxes(otherLabel, other, rightPanel, lists.otherSymptoms);
 
+        setUpButtonAndFields(rightPanel);
+
         this.add(leftPanel, BorderLayout.WEST);
         this.add(middlePanel, BorderLayout.CENTER);
         this.add(rightPanel,  BorderLayout.EAST);
 
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enter");
-        getActionMap().put("enter", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                documentation = "";
-                getCheckedBoxes();
-                System.out.println(documentation);
-            }
-        });
-
     }
 
+    private void setUpButtonAndFields(JPanel panel){
+        for(JTextField field : otherFields){
+            panel.add(field);
+            panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        }
+
+        JButton saveButton = new JButton("ZAPISZ");
+        saveButton.addActionListener(e -> {
+            checkBoxesDocumentation = "";
+            getCheckedBoxes();
+            parent.combineDocumentation(checkBoxesDocumentation);
+            parent.addDocumentation();
+            new PatientScene("PATIENT-SCENE", parent.cardLayout, parent.parentPanel, newPatient);
+            PatientsListScene.patientsList.add(newPatient);
+            parent.cardLayout.show(parent.parentPanel, "PATIENT-SCENE");
+        });
+        panel.add(saveButton);
+    }
     private void setUpCheckBoxes(JLabel label, JCheckBox[] checkBoxes, JPanel panel, java.util.List<String> list) {
         int index = 0;
         panel.add(label);
@@ -116,6 +248,6 @@ class CheckBoxesPanel extends JPanel{
     private void makeItString(ArrayList<String> array, String base){
         base += array;
         base += "\n";
-        documentation += base;
+        checkBoxesDocumentation += base;
     }
 }

@@ -2,10 +2,7 @@ package Scenes;
 
 
 import Containers.CardsPanel;
-
-import javax.swing.*;
 import java.awt.CardLayout;
-import java.text.Collator;
 import java.util.*;
 
 public class PatientsListScene extends Scene {
@@ -15,8 +12,7 @@ public class PatientsListScene extends Scene {
     public PatientsListScene(String title, CardLayout cardLayout, CardsPanel parentPanel) {
         super(title, cardLayout, parentPanel);
 
-        Collator polishCollator = Collator.getInstance(new Locale("pl", "PL"));
-        patientsList.sort(Comparator.comparing(Patient::lastName, polishCollator).thenComparing(Patient::name, polishCollator));
+        Collections.sort(patientsList);
     }
 }
 

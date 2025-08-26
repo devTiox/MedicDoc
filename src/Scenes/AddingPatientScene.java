@@ -4,7 +4,6 @@ import Containers.CardsPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class AddingPatientScene extends Scene{
 
@@ -33,20 +32,9 @@ public class AddingPatientScene extends Scene{
     public AddingPatientScene(String title, CardLayout cardLayout, CardsPanel parentPanel) {
         super(title, cardLayout, parentPanel);
         setUpTextFields();
-        addPatient(this);
     }
 
-    private void addPatient(AddingPatientScene parentScreen){
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enter");
-        getActionMap().put("enter", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Patient newPatient =  new Patient(textField[0].getText(), textField[1].getText(), textField[2].getText(),
-                        textField[3].getText(), textField[4].getText(), textField[5].getText(), textField[6].getText(),null);
-                confirmationWindow(newPatient, parentScreen);
-            }
-        });
-    }
+
 
     private void confirmationWindow(Patient newPatient, AddingPatientScene parentScreen){
         UIManager.put("OptionPane.messageFont", new Font("Arial", Font.BOLD, 30));
@@ -58,9 +46,8 @@ public class AddingPatientScene extends Scene{
                 JOptionPane.YES_NO_OPTION);
 
         if(result == JOptionPane.YES_OPTION){
-            new newDocumentationScene("DOCUMENTATION_SCENE", cardLayout, parentPanel);
+            new newDocumentationScene("DOCUMENTATION_SCENE", cardLayout, parentPanel, newPatient);
             cardLayout.show(parentPanel, "DOCUMENTATION_SCENE");
-//            PatientsListScene.patientsList.add(newPatient);
         }
     }
 
@@ -88,5 +75,17 @@ public class AddingPatientScene extends Scene{
             this.add(field, gbc);
             gbc.gridy++;
         }
+        saveButton(gbc);
+    }
+
+    private void saveButton(GridBagConstraints gbc) {
+        JButton saveButton = new JButton("ZAPISZ");
+        saveButton.setFont(new Font("Arial", Font.ITALIC, 40));
+        saveButton.addActionListener(e -> {
+            Patient newPatient = new Patient(textField[0].getText(), textField[1].getText(), textField[2].getText(), textField[3].getText(),
+                    textField[4].getText(), textField[5].getText(), textField[6].getText());
+            confirmationWindow(newPatient, this);
+        });
+        this.add(saveButton,gbc);
     }
 }
