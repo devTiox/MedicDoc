@@ -1,6 +1,7 @@
 package Scenes;
 
 import Containers.CardsPanel;
+import Data.Patient;
 
 import javax.swing.*;
 import java.awt.*;

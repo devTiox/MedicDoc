@@ -31,10 +31,7 @@ public abstract class Scene extends JPanel {
 
     private void backToPreviousScene() {
         if(this.getClass().getSimpleName().equals("PatientScene")) {
-//            parentPanel.updatePatientsListScene();
             cardLayout.show(parentPanel, "PATIENTS_LIST");
-//        }else if(this.getClass().getSimpleName().equals()){
-
         }else cardLayout.show(parentPanel,"MENU");
     }
 }

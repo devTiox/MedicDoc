@@ -1,7 +1,9 @@
 package Scenes;
 
-
 import Containers.CardsPanel;
+import Data.Lists;
+import Data.Patient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -195,9 +197,8 @@ class CheckBoxesPanel extends JPanel{
             checkBoxesDocumentation = "";
             getCheckedBoxes();
             combineDocumentation();
-            new PatientScene("PATIENT-SCENE", parent.cardLayout, parent.parentPanel, patient);
-            PatientsListScene.patientsList.add(patient);
-            parent.cardLayout.show(parent.parentPanel, "PATIENT-SCENE");
+            new PatientScene(patient.patientSceneTitle, parent.cardLayout, parent.parentPanel, patient);
+            parent.cardLayout.show(parent.parentPanel, patient.patientSceneTitle);
         });
         panel.add(saveButton);
     }

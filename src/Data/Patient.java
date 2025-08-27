@@ -1,4 +1,4 @@
-package Scenes;
+package Data;
 
 import java.text.Collator;
 import java.util.Locale;
@@ -12,6 +12,7 @@ public class Patient implements Comparable<Patient>{
     public final String phoneNumber;
     public final String email;
     public String documentation;
+    public String patientSceneTitle;
 
     public Patient(String name, String lastName, String address, String birthDate, String PESEL, String phoneNumber, String email) {
         this.name = name;
@@ -22,6 +23,7 @@ public class Patient implements Comparable<Patient>{
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.documentation = "";
+        patientSceneTitle = "PATIENT-" + PESEL + "-SCENE";
     }
 
     private static final Collator POLISH_COLLATOR =
