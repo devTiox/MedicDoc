@@ -23,12 +23,12 @@ public class PatientScene extends Scene{
         JTextArea patientInfoArea;
         @SuppressWarnings("SpellCheckingInspection") String patientInfo = """
                 
-                    Imię i nazwisko: %s %s
-                    Data urodzenia: %s     Wiek: %d
-                    Miejsce zamieszkania: %s
-                    PESEL: %s
-                    Numer telefonu: %s    E-mail: %s
-                    -----------------------------------------
+                          Imię i nazwisko: %s %s
+                        Data urodzenia: %s     Wiek: %d
+                        Miejsce zamieszkania: %s
+                        PESEL: %s
+                        Numer telefonu: %s    E-mail: %s
+                ------------------------------------------------------------------------------
                 """.formatted(patient.name, patient.lastName, patient.birthDate, getAge(), patient.address,
                 patient.PESEL, patient.phoneNumber, patient.email);
         patientInfoArea = new JTextArea(patientInfo);
@@ -53,6 +53,14 @@ public class PatientScene extends Scene{
         documentationPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         documentationPanel.setOpaque(false);
         documentationPanel.getViewport().setOpaque(false);
+        @SuppressWarnings("SpellCheckingInspection")
+        JButton updateButton = new JButton("Dodaj dokumentacje");
+        updateButton.setFont(new Font("Arial", Font.ITALIC, 40));
+        updateButton.addActionListener(e ->{
+            new newDocumentationScene("UPDATE-DOCUMENTATION", cardLayout, parentPanel, patient);
+            cardLayout.show(parentPanel, "UPDATE-DOCUMENTATION");
+        });
+        this.add(updateButton, BorderLayout.SOUTH);
 
         return documentationPanel;
     }

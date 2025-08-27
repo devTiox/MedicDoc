@@ -21,8 +21,7 @@ public class Patient implements Comparable<Patient>{
         this.PESEL = PESEL;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        //noinspection SpellCheckingInspection
-        this.documentation = "brak dostępnej dokumentacji";
+        this.documentation = "";
     }
 
     private static final Collator POLISH_COLLATOR =

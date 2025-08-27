@@ -10,15 +10,8 @@ import java.util.Date;
 
 public class newDocumentationScene extends Scene {
 
-    private final Patient patient;
-
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    private final String todayDate = "Data wpisu:" + sdf.format(new Date()) + "\n" + "-------------------------\n";
-    private String documentation = todayDate;
-
     public newDocumentationScene(String title, CardLayout cardLayout, CardsPanel parentPanel, Patient patient) {
         super(title, cardLayout, parentPanel);
-        this.patient = patient;
 
         UIManager.put("CheckBox.font", new Font("Arial", Font.BOLD, 20));
         UIManager.put("Label.font", new Font("Arial", Font.ITALIC, 35));
@@ -28,28 +21,22 @@ public class newDocumentationScene extends Scene {
         CardLayout thisCardLayout = new  CardLayout();
         this.setLayout(thisCardLayout);
 
-        TextFieldsPanel textFieldsPanel = new TextFieldsPanel(this, thisCardLayout);
+        TextFieldsPanel textFieldsPanel = new TextFieldsPanel(this, thisCardLayout, patient);
         CheckBoxesPanel checkBoxesPanel = new CheckBoxesPanel(this, patient);
 
         this.add(checkBoxesPanel, "CHECK-BOXES");
         this.add(textFieldsPanel, "TEXT-FIELDS");
         thisCardLayout.show(this, "TEXT-FIELDS");
     }
-
-    public void combineDocumentation(String documentation) {
-        this.documentation += documentation + "-------------------------\n";
-    }
-
-    public void addDocumentation(){
-        patient.documentation = documentation;
-        System.out.println(patient);
-    }
 }
 
 @SuppressWarnings("SpellCheckingInspection")
 class TextFieldsPanel extends JPanel{
+    private final Patient patient;
 
-    private String fieldsDocumentation;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private final String todayDate = "Data wpisu: " + sdf.format(new Date()) + "\n---------------------------\n";
+    private String fieldsDocumentation = todayDate;
 
     private final JLabel medicaments = new JLabel("Zażywane leki(wraz z powodem):".toUpperCase());
     private final JLabel supplements = new JLabel("Zażywane suplementy:".toUpperCase());
@@ -68,12 +55,13 @@ class TextFieldsPanel extends JPanel{
     private final JTextArea allergiesField = new JTextArea();
     private final JTextArea alertsField = new JTextArea();
 
-    private final newDocumentationScene parent;
+    private final JPanel parent;
     private final CardLayout parentLayout;
 
-    public TextFieldsPanel(newDocumentationScene parent,CardLayout parentLayout) {
+    public TextFieldsPanel(JPanel parent,CardLayout parentLayout, Patient patient) {
         this.parent = parent;
         this.parentLayout = parentLayout;
+        this.patient = patient;
 
         this.setOpaque(false);
         this.setLayout(new GridBagLayout());
@@ -96,12 +84,15 @@ class TextFieldsPanel extends JPanel{
 
         JButton saveButton = new JButton("ZAPISZ");
         saveButton.addActionListener(e->{
-            fieldsDocumentation = "";
             checkFields();
-            parent.combineDocumentation(fieldsDocumentation);
+            combineDocumentation();
             parentLayout.show(parent, "CHECK-BOXES");
         });
         this.add(saveButton, gbc);
+    }
+
+    private void combineDocumentation() {
+        patient.documentation += fieldsDocumentation + "\n";
     }
 
     private void setUpFields(JLabel label, JTextArea field, GridBagConstraints gbc){
@@ -137,9 +128,8 @@ class TextFieldsPanel extends JPanel{
 class CheckBoxesPanel extends JPanel{
     private String checkBoxesDocumentation;
 
-    private final Patient newPatient;
+    private final Patient patient;
     private final newDocumentationScene parent;
-
 
     private final JLabel digestiveLabel = new JLabel("UKŁAD POKARMOWY: ");
     private final JLabel urinaryLabel = new JLabel("UKŁAD MOCZOWY: ");
@@ -162,9 +152,9 @@ class CheckBoxesPanel extends JPanel{
     private final JCheckBox[] physical = new JCheckBox[13];
     private final JCheckBox[] other = new JCheckBox[11];
 
-    public CheckBoxesPanel(newDocumentationScene parent, Patient newPatient){
+    public CheckBoxesPanel(newDocumentationScene parent, Patient patient){
         this.setOpaque(false);
-        this.newPatient = newPatient;
+        this.patient = patient;
         this.parent = parent;
 
         JPanel leftPanel = new JPanel();
@@ -192,7 +182,6 @@ class CheckBoxesPanel extends JPanel{
         this.add(leftPanel, BorderLayout.WEST);
         this.add(middlePanel, BorderLayout.CENTER);
         this.add(rightPanel,  BorderLayout.EAST);
-
     }
 
     private void setUpButtonAndFields(JPanel panel){
@@ -205,13 +194,16 @@ class CheckBoxesPanel extends JPanel{
         saveButton.addActionListener(e -> {
             checkBoxesDocumentation = "";
             getCheckedBoxes();
-            parent.combineDocumentation(checkBoxesDocumentation);
-            parent.addDocumentation();
-            new PatientScene("PATIENT-SCENE", parent.cardLayout, parent.parentPanel, newPatient);
-            PatientsListScene.patientsList.add(newPatient);
+            combineDocumentation();
+            new PatientScene("PATIENT-SCENE", parent.cardLayout, parent.parentPanel, patient);
+            PatientsListScene.patientsList.add(patient);
             parent.cardLayout.show(parent.parentPanel, "PATIENT-SCENE");
         });
         panel.add(saveButton);
+    }
+
+    private void combineDocumentation(){
+        patient.documentation += checkBoxesDocumentation + "\n";
     }
     private void setUpCheckBoxes(JLabel label, JCheckBox[] checkBoxes, JPanel panel, java.util.List<String> list) {
         int index = 0;
