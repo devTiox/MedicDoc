@@ -6,6 +6,7 @@ import Data.Patient;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -206,12 +207,18 @@ class CheckBoxesPanel extends JPanel{
     private void combineDocumentation(){
         patient.documentation += checkBoxesDocumentation + "\n";
     }
+
     private void setUpCheckBoxes(JLabel label, JCheckBox[] checkBoxes, JPanel panel, java.util.List<String> list) {
         int index = 0;
         panel.add(label);
         for (String symptom : list) {
             JCheckBox checkBox = new JCheckBox(symptom);
-            checkBox.setOpaque(false);
+            checkBox.setBackground(new Color(255,220,240));
+            checkBox.addItemListener(e -> {
+                if(e.getStateChange() == ItemEvent.SELECTED){
+                    checkBox.setBackground(Color.GREEN);
+                }else checkBox.setBackground(new Color(255,220,240));
+            });
             checkBoxes[index] = checkBox;
             panel.add(checkBox);
             index++;

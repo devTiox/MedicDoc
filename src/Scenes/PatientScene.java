@@ -1,10 +1,12 @@
 package Scenes;
 
 import Containers.CardsPanel;
+import Data.DataBase;
 import Data.Patient;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -20,7 +22,11 @@ public class PatientScene extends Scene{
         this.add(getPatientInfoArea(), BorderLayout.NORTH);
         this.add(documentationPanel(), BorderLayout.CENTER);
         this.add(setUpButtons(), BorderLayout.SOUTH);
-
+        try {
+            DataBase.updatePatientDocumentation(patient);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private JTextArea getPatientInfoArea(){

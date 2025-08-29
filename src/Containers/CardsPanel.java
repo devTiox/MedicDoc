@@ -2,6 +2,9 @@ package Containers;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+
+import Data.DataBase;
 import Scenes.*;
 
 public class CardsPanel extends JPanel {
@@ -14,6 +17,12 @@ public class CardsPanel extends JPanel {
         this.setBackground(new Color(255,220,240));
         new MenuScene("MENU", cardLayout, this);
         new PatientsListScene("PATIENTS_LIST", cardLayout, this);
+
+        try {
+            DataBase.loadPatientsList();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         addingPatient = new AddingPatientScene("ADD_PATIENT", cardLayout, this);
         cardLayout.show(this, "MENU");
         this.revalidate();

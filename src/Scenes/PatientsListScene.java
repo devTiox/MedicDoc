@@ -23,6 +23,7 @@ public class PatientsListScene extends Scene {
 
     private void setUpButtons(){
         for(Patient patient : patientsList){
+            new PatientScene(patient.patientSceneTitle, cardLayout, parentPanel, patient);
             String buttonLabel = "<html>%s %s<br> %s</html>".formatted(patient.lastName, patient.name, patient.PESEL);
             JButton patientButton = new  JButton(buttonLabel);
             patientButton.addActionListener(e -> cardLayout.show(parentPanel, patient.patientSceneTitle));
