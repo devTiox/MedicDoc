@@ -1,10 +1,12 @@
 package Scenes;
 
 import Containers.CardsPanel;
+import Data.DataBase;
 import Data.Patient;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class AddingPatientScene extends Scene{
 
@@ -48,6 +50,11 @@ public class AddingPatientScene extends Scene{
 
         if(result == JOptionPane.YES_OPTION){
             new newDocumentationScene("DOCUMENTATION_SCENE", cardLayout, parentPanel, newPatient);
+            try {
+                DataBase.insertPatient(newPatient);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             cardLayout.show(parentPanel, "DOCUMENTATION_SCENE");
         }
     }
