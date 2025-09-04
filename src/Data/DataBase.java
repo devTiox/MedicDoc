@@ -68,4 +68,11 @@ public class DataBase {
             PatientsListScene.patientsList.add(patient);
         }
     }
+
+    public static void deletePatient(Patient p) throws SQLException {
+        String deleteQuery = "DELETE FROM Pacjenci WHERE PESEL = ?;";
+        PreparedStatement ps = conn.prepareStatement(deleteQuery);
+        ps.setString(1, p.PESEL);
+        ps.executeUpdate();
+    }
 }

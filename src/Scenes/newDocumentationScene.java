@@ -1,6 +1,7 @@
 package Scenes;
 
 import Containers.CardsPanel;
+import Containers.MainWindow;
 import Data.Lists;
 import Data.Patient;
 
@@ -25,10 +26,12 @@ public class newDocumentationScene extends Scene {
         this.setLayout(thisCardLayout);
 
         TextFieldsPanel textFieldsPanel = new TextFieldsPanel(this, thisCardLayout, patient);
-        CheckBoxesPanel checkBoxesPanel = new CheckBoxesPanel(this, patient);
+        CheckBoxesPanel checkBoxesPanel = new CheckBoxesPanel(this, thisCardLayout, patient);
+        TextDocumentationPanel textDocumentationPanel = new TextDocumentationPanel(this, patient);
 
         this.add(checkBoxesPanel, "CHECK-BOXES");
         this.add(textFieldsPanel, "TEXT-FIELDS");
+        this.add(textDocumentationPanel, "TEXT-DOCUMENTATION");
         thisCardLayout.show(this, "TEXT-FIELDS");
     }
 }
@@ -132,7 +135,8 @@ class CheckBoxesPanel extends JPanel{
     private String checkBoxesDocumentation;
 
     private final Patient patient;
-    private final newDocumentationScene parent;
+    private final JPanel parent;
+    private final CardLayout parentLayout;
 
     private final JLabel digestiveLabel = new JLabel("UKŁAD POKARMOWY: ");
     private final JLabel urinaryLabel = new JLabel("UKŁAD MOCZOWY: ");
@@ -155,10 +159,11 @@ class CheckBoxesPanel extends JPanel{
     private final JCheckBox[] physical = new JCheckBox[13];
     private final JCheckBox[] other = new JCheckBox[11];
 
-    public CheckBoxesPanel(newDocumentationScene parent, Patient patient){
+    public CheckBoxesPanel(JPanel parent,CardLayout parentLayout, Patient patient){
         this.setOpaque(false);
         this.patient = patient;
         this.parent = parent;
+        this.parentLayout = parentLayout;
 
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -198,8 +203,7 @@ class CheckBoxesPanel extends JPanel{
             checkBoxesDocumentation = "";
             getCheckedBoxes();
             combineDocumentation();
-            new PatientScene(patient.patientSceneTitle, parent.cardLayout, parent.parentPanel, patient);
-            parent.cardLayout.show(parent.parentPanel, patient.patientSceneTitle);
+            parentLayout.show(parent, "TEXT-DOCUMENTATION");
         });
         panel.add(saveButton);
     }
@@ -242,6 +246,12 @@ class CheckBoxesPanel extends JPanel{
                 checkedArray.add(checkBox.getText());
             }
         }
+        if(label.equals(otherLabel)){
+            for(JTextField field : otherFields){
+                if(!field.getText().isEmpty())
+                    checkedArray.add(field.getText());
+            }
+        }
         makeItString(checkedArray, checked);
     }
 
@@ -249,5 +259,32 @@ class CheckBoxesPanel extends JPanel{
         base += array;
         base += "\n";
         checkBoxesDocumentation += base;
+    }
+}
+
+class TextDocumentationPanel extends JPanel {
+    private final Patient patient;
+    private final JTextArea textArea;
+
+    public TextDocumentationPanel(newDocumentationScene parent, Patient patient) {
+        this.patient = patient;
+        this.setLayout(new BorderLayout(100, 50));
+        this.setOpaque(false);
+        textArea = new JTextArea();
+        textArea.setEditable(true);
+        textArea.setSize(MainWindow.screenWidth - 200, MainWindow.screenHeight - 100);
+        this.add(textArea, BorderLayout.CENTER);
+        JButton saveButton = new JButton("ZAPISZ");
+        saveButton.addActionListener(e -> {
+            combineDocumentation();
+            new PatientScene(patient.patientSceneTitle, parent.cardLayout, parent.parentPanel, patient);
+            parent.cardLayout.show(parent.parentPanel, patient.patientSceneTitle);
+        });
+        this.add(saveButton, BorderLayout.SOUTH);
+    }
+
+    private void combineDocumentation(){
+        String textDocumentation = textArea.getText();
+        patient.documentation += textDocumentation + "\n";
     }
 }

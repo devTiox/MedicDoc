@@ -13,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 public class PatientScene extends Scene{
     private final Patient patient;
 
-
     public PatientScene(String title, CardLayout cardLayout, CardsPanel parentPanel, Patient patient) {
         super(title, cardLayout, parentPanel);
         UIManager.put("Button.font", new Font("Arial", Font.ITALIC, 40));
@@ -43,7 +42,7 @@ public class PatientScene extends Scene{
                 patient.PESEL, patient.phoneNumber, patient.email);
         patientInfoArea = new JTextArea(patientInfo);
         patientInfoArea.setFont(new Font("Arial", Font.BOLD, 30));
-        patientInfoArea.setEditable(false);
+        patientInfoArea.setEditable(true);
         patientInfoArea.setOpaque(false);
 
         return patientInfoArea;
@@ -73,11 +72,25 @@ public class PatientScene extends Scene{
     private JPanel setUpButtons(){
         JPanel panel = new JPanel(new BorderLayout());
         @SuppressWarnings("SpellCheckingInspection")
-        JButton updateButton = new JButton("Dodaj dokumentacje");
+        JButton updateButton = new JButton("Dodaj Dokumentacje");
         updateButton.addActionListener(e ->{
             new newDocumentationScene("UPDATE-DOCUMENTATION", cardLayout, parentPanel, patient);
             cardLayout.show(parentPanel, "UPDATE-DOCUMENTATION");
         });
+
+        JButton deleteButton = new JButton("Usuń Pacjenta");
+        deleteButton.setBackground(Color.RED);
+        deleteButton.addActionListener(e ->{
+            PatientsListScene.patientsList.remove(patient);
+            try {
+                DataBase.deletePatient(patient);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            new PatientsListScene("PATIENTS_LIST", cardLayout, parentPanel);
+            cardLayout.show(parentPanel, "PATIENTS_LIST");
+        });
+
         JButton saveButton = new JButton("Zapisz");
         saveButton.addActionListener(e ->{
             if(!PatientsListScene.patientsList.contains(patient)) {
@@ -86,9 +99,11 @@ public class PatientScene extends Scene{
             new PatientsListScene("PATIENTS_LIST", cardLayout, parentPanel);
             cardLayout.show(parentPanel, "PATIENTS_LIST");
         });
+        saveButton.setBackground(Color.GREEN);
 
-        panel.add(updateButton, BorderLayout.WEST);
-        panel.add(saveButton, BorderLayout.EAST);
+        panel.add(deleteButton, BorderLayout.EAST);
+        panel.add(updateButton, BorderLayout.CENTER);
+        panel.add(saveButton, BorderLayout.WEST);
         panel.setOpaque(false);
 
         return panel;
