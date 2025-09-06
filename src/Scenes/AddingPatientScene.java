@@ -42,7 +42,6 @@ public class AddingPatientScene extends Scene{
     private void confirmationWindow(Patient newPatient, AddingPatientScene parentScreen){
         UIManager.put("OptionPane.messageFont", new Font("Arial", Font.BOLD, 30));
         UIManager.put("OptionPane.buttonFont", new Font("Arial", Font.PLAIN, 20));
-        @SuppressWarnings("SpellCheckingInspection")
         int result = JOptionPane.showConfirmDialog(parentScreen,
                 newPatient + "\nCzy wszystko się zgadza",
                 "Potwierdzenie",
@@ -79,6 +78,7 @@ public class AddingPatientScene extends Scene{
             this.add(label, gbc);
             gbc.gridx++;
             field = textField[i];
+            field.setOpaque(true);
             field.setFont(new Font("Arial", Font.BOLD, 30));
             this.add(field, gbc);
             gbc.gridy++;
@@ -86,13 +86,66 @@ public class AddingPatientScene extends Scene{
         saveButton(gbc);
     }
 
+    private boolean checkDataValidation(){
+        boolean valid = true;
+        String text;
+        JLabel label;
+        JTextField field;
+        for(int i = 0; i < 7; i++){
+            label = labelsFields[i];
+            field = textField[i];
+            text = field.getText();
+            switch(i){
+                case 0, 1, 2, 6 -> {
+                    if(text.trim().isEmpty()) {
+                        field.setBackground(Color.RED);
+                        valid = false;
+                    } else {
+                        field.setBackground(Color.WHITE);
+                    }
+                }
+                case 3 -> {
+                    if (text.length() != 10 || text.charAt(2) != '/' || text.charAt(5) != '/') {
+                        field.setBackground(Color.RED);
+                        valid = false;
+                    } else {
+                        field.setBackground(Color.WHITE);
+                    }
+                }
+                case 4 -> {
+                    if(text.length() != 11){
+                        field.setBackground(Color.RED);
+                        valid = false;
+                    } else {
+                        field.setBackground(Color.WHITE);
+                    }
+                }case 5 -> {
+                    if(text.length() != 11 && text.length() != 9){
+                        field.setBackground(Color.RED);
+                        valid = false;
+                    } else {
+                        field.setBackground(Color.WHITE);
+                    }
+                }
+            }field.repaint();
+        }
+        return valid;
+    }
+
     private void saveButton(GridBagConstraints gbc) {
         JButton saveButton = new JButton("ZAPISZ");
         saveButton.setFont(new Font("Arial", Font.ITALIC, 40));
         saveButton.addActionListener(e -> {
-            Patient newPatient = new Patient(textField[0].getText(), textField[1].getText(), textField[2].getText(), textField[3].getText(),
-                    textField[4].getText(), textField[5].getText(), textField[6].getText(), "");
-            confirmationWindow(newPatient, this);
+            boolean valid = checkDataValidation();
+            this.repaint();
+
+            if(valid) {
+                Patient newPatient = new Patient(textField[0].getText(), textField[1].getText(),
+                        textField[2].getText(), textField[3].getText(),
+                        textField[4].getText(), textField[5].getText(),
+                        textField[6].getText(), "");
+                confirmationWindow(newPatient, this);
+            }
         });
         this.add(saveButton,gbc);
     }
