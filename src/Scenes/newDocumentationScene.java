@@ -124,6 +124,9 @@ class TextFieldsPanel extends JPanel{
     }
 
     private void makeItString(String fieldContent, String base){
+        if(fieldContent.isEmpty()){
+            fieldContent = "BRAK";
+        }
         base += fieldContent;
         base += "\n";
         fieldsDocumentation += base;
@@ -251,6 +254,9 @@ class CheckBoxesPanel extends JPanel{
                 if(!field.getText().isEmpty())
                     checkedArray.add(field.getText());
             }
+        }
+        if(checkedArray.isEmpty()){
+            checkedArray.add("BRAK");
         }
         makeItString(checkedArray, checked);
     }

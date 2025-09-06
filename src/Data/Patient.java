@@ -14,7 +14,7 @@ public class Patient implements Comparable<Patient>{
     public String documentation;
     public String patientSceneTitle;
 
-    public Patient(String name, String lastName, String address, String birthDate, String PESEL, String phoneNumber, String email) {
+    public Patient(String name, String lastName, String address, String birthDate, String PESEL, String phoneNumber, String email, String documentation) {
         this.name = name;
         this.lastName = lastName;
         this.address = address;
@@ -22,7 +22,7 @@ public class Patient implements Comparable<Patient>{
         this.PESEL = PESEL;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.documentation = "";
+        this.documentation = documentation;
         patientSceneTitle = "PATIENT-" + PESEL + "-SCENE";
     }
 

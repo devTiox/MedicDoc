@@ -64,7 +64,7 @@ public class DataBase {
             Patient patient = new Patient(rs.getString("name"), rs.getString("lastName"),
                     rs.getString("address"), rs.getString("birthDate"),
                     rs.getString("PESEL"), rs.getString("phoneNumber"),
-                    rs.getString("email"));
+                    rs.getString("email"),rs.getString("documentation"));
             PatientsListScene.patientsList.add(patient);
         }
     }

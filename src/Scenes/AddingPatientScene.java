@@ -91,7 +91,7 @@ public class AddingPatientScene extends Scene{
         saveButton.setFont(new Font("Arial", Font.ITALIC, 40));
         saveButton.addActionListener(e -> {
             Patient newPatient = new Patient(textField[0].getText(), textField[1].getText(), textField[2].getText(), textField[3].getText(),
-                    textField[4].getText(), textField[5].getText(), textField[6].getText());
+                    textField[4].getText(), textField[5].getText(), textField[6].getText(), "");
             confirmationWindow(newPatient, this);
         });
         this.add(saveButton,gbc);

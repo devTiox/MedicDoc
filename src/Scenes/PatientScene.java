@@ -57,6 +57,7 @@ public class PatientScene extends Scene{
 
     private JScrollPane documentationPanel(){
         JTextArea documentationArea = new JTextArea(patient.documentation);
+        documentationArea.setFont(new Font("Arial", Font.BOLD, 30));
         documentationArea.setOpaque(false);
         documentationArea.setMargin(new java.awt.Insets(0, 30, 0, 0));
         documentationArea.setLineWrap(true);
@@ -78,18 +79,7 @@ public class PatientScene extends Scene{
             cardLayout.show(parentPanel, "UPDATE-DOCUMENTATION");
         });
 
-        JButton deleteButton = new JButton("Usuń Pacjenta");
-        deleteButton.setBackground(Color.RED);
-        deleteButton.addActionListener(e ->{
-            PatientsListScene.patientsList.remove(patient);
-            try {
-                DataBase.deletePatient(patient);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-            new PatientsListScene("PATIENTS_LIST", cardLayout, parentPanel);
-            cardLayout.show(parentPanel, "PATIENTS_LIST");
-        });
+        JButton deleteButton = getJButton();
 
         JButton saveButton = new JButton("Zapisz");
         saveButton.addActionListener(e ->{
@@ -107,6 +97,27 @@ public class PatientScene extends Scene{
         panel.setOpaque(false);
 
         return panel;
+    }
+
+    private JButton getJButton() {
+        JButton deleteButton = new JButton("Usuń Pacjenta");
+        JLabel message = new JLabel("!!USUWANIE PACJENTA!!");
+        message.setFont(new Font("Arial", Font.BOLD, 30));
+        deleteButton.setBackground(Color.RED);
+        deleteButton.addActionListener(e ->{
+            int result = JOptionPane.showConfirmDialog(this, message, "USUWANIE",JOptionPane.OK_CANCEL_OPTION);
+            if(result == JOptionPane.YES_OPTION) {
+                PatientsListScene.patientsList.remove(patient);
+                try {
+                    DataBase.deletePatient(patient);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                new PatientsListScene("PATIENTS_LIST", cardLayout, parentPanel);
+                cardLayout.show(parentPanel, "PATIENTS_LIST");
+            }
+        });
+        return deleteButton;
     }
 
 
