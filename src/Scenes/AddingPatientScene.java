@@ -89,10 +89,8 @@ public class AddingPatientScene extends Scene{
     private boolean checkDataValidation(){
         boolean valid = true;
         String text;
-        JLabel label;
         JTextField field;
         for(int i = 0; i < 7; i++){
-            label = labelsFields[i];
             field = textField[i];
             text = field.getText();
             switch(i){
